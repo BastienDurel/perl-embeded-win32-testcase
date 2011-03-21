@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2011/03/21 15:31:07.125.cpp,C:\Documents and Settings\bdurel.DATA-DEVSRV1.000\Mes documents\Projets Borland Studio\Unit2.cpp=C:\Documents and Settings\bdurel.DATA-DEVSRV1.000\Mes documents\Projets Borland Studio\perl-testcase\main.cpp</Transaction>
+    <Transaction>2011/03/21 15:31:28.343.bdsproj,C:\Documents and Settings\bdurel.DATA-DEVSRV1.000\Mes documents\Projets Borland Studio\Project2.bdsproj=C:\Documents and Settings\bdurel.DATA-DEVSRV1.000\Mes documents\Projets Borland Studio\perl-testcase\perl_testcase.bdsproj</Transaction>
+    <Transaction>2011/03/21 15:32:36.640.cpp,C:\Documents and Settings\bdurel.DATA-DEVSRV1.000\Mes documents\Projets Borland Studio\perl-testcase\Unit1.cpp=C:\Documents and Settings\bdurel.DATA-DEVSRV1.000\Mes documents\Projets Borland Studio\perl-testcase\perlapi.cpp</Transaction>
+    <Transaction>2011/03/21 15:32:36.640.h,C:\Documents and Settings\bdurel.DATA-DEVSRV1.000\Mes documents\Projets Borland Studio\perl-testcase\Unit1.h=C:\Documents and Settings\bdurel.DATA-DEVSRV1.000\Mes documents\Projets Borland Studio\perl-testcase\perlapi.h</Transaction>
+  </Transactions>
+</BorlandProject>
