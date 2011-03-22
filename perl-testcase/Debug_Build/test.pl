@@ -9,6 +9,7 @@ sub connect
   my ($dsn, $u, $p) = @_;
   undef $dbh;
   $dbh = DBI->connect($dsn, $u, $p) || die "error connect: $DBI::errstr";
+  #die "test error";
   return $dbh->ping;
 }
 

@@ -8,6 +8,10 @@ extern int _argc;
 extern char ** _argv;
 #endif
 
+extern void PrintInt(const char* msg, int nb);
+extern void PrintStr(const char* msg, const char * str);
+extern void PrintPtr(const char* msg, const void * ptr);
+
 //---------------------------------------------------------------------------
 class PerlAPI
 {

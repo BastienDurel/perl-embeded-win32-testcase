@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 
   cout << "connect: " << lConnect << endl;
 
-  if (lApi.GetError()) cerr << lApi.GetError() << endl;
+  if (lApi.GetError()) cerr << "ERROR: " << lApi.GetError() << endl;
 
   int i;
   cin >> i;
@@ -63,6 +63,10 @@ static std::string sgVendor;
 const char * PerlAPI::mPerl5Lib;
 const char * PerlAPI::mPerl5Site;
 const char * PerlAPI::mPerl5Vendor;
+
+void PrintInt(const char* msg, int nb) { cout << msg << " " << nb << endl; }
+void PrintStr(const char* msg, const char * str) { cout << msg << " " << str << endl; }
+void PrintPtr(const char* msg, const void * ptr) { cout << msg << " " << ptr << endl; }
 
 /*  this function has to be defined where perl.h is not included */
 /* otherwise Borland will complain */

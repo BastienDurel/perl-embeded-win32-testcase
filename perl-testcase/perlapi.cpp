@@ -1,7 +1,19 @@
 //---------------------------------------------------------------------------
 
-#pragma hdrstop
+#if defined __BORLANDC__
+#define __SETJMP_H /* don't include <setnmp.h> */  
+#define __SETJMP_H_USING_LIST
+typedef struct my_jmp_buf { char buff[64]; } MYJUMPBUF;
+#define jmp_buf MYJUMPBUF /* as bcc's one is shorter */
+#define sigjmp_buf jmp_buf 
+#define Sigjmp_buf jmp_buf
 
+#define HAVE_DES_FCRYPT
+#define USE_SITECUSTOMIZE
+#define PERL_IMPLICIT_CONTEXT
+#define PERL_IMPLICIT_SYS
+#define PERL_MSVCRT_READFIX
+#endif
 
 #include <EXTERN.h> /* from the Perl distribution */
 #include <perl.h> /* from the Perl distribution */
@@ -10,6 +22,14 @@
 //---------------------------------------------------------------------------
 
 #define GET_PERL_INTERPRETER PerlInterpreter* my_perl=(PerlInterpreter*)pinterp
+
+#if !defined MULTIPLICITY
+#error no MULTIPLICITY
+#endif
+
+#ifdef HAS_SIGSETJMP
+#error defined HAS_SIGSETJMP
+#endif
 
 EXTERN_C void xs_init (pTHX);
 
@@ -110,6 +130,30 @@ bool PerlAPI::Connect(const char* dsn, const char* user, const char* pwd)
   GET_PERL_INTERPRETER;
 	PERL_SET_CONTEXT(my_perl);
 
+  PrintInt("sizeof my_perl: ", sizeof(*my_perl));
+  PrintInt("sizeof SV: ", sizeof(SV));
+  PrintInt("sizeof GV: ", sizeof(GV));
+  PrintInt("sizeof JMPENV: ", sizeof(JMPENV));
+  //PrintInt("sizeof Sigjmp_buf: ", sizeof(Sigjmp_buf));
+   
+	void* p1 =  &(my_perl->Istack_sp);
+	void* p2 =  &(my_perl->Icurpm);
+	void* p3 =  &(my_perl->Ireg_state);
+	void* p4 =  &(my_perl->Iperldb);
+	void* p5 =  &(my_perl->Imaxsysfd);
+
+  void* p_base = &(*my_perl);
+	void* p_err = &((*my_perl).Ierrgv);
+	PrintPtr("p_base: ", p_base);
+  PrintPtr("p_err: ", p_err);
+  PrintInt("offset: ", (unsigned int)p_err - (unsigned int)p_base);
+  
+	PrintInt("p1: ", (unsigned int)p1 - (unsigned int)p_base);
+	PrintInt("p2: ", (unsigned int)p2 - (unsigned int)p_base);
+	PrintInt("p3: ", (unsigned int)p3 - (unsigned int)p_base);
+	PrintInt("p4: ", (unsigned int)p4 - (unsigned int)p_base);
+	PrintInt("p5: ", (unsigned int)p5 - (unsigned int)p_base);
+
   dSP ;
   int count, ret;
 
@@ -124,15 +168,26 @@ bool PerlAPI::Connect(const char* dsn, const char* user, const char* pwd)
 
   GV* perrb=PL_errgv;
 
+
+
   count = perl_call_pv("Data::testcase::connect", G_SCALAR|G_EVAL|G_KEEPERR);
 
   SPAGAIN ;
 
   GV* perr=PL_errgv;
+
+  PrintPtr("PL_errgv:", perr);
+  if (perr)
+  {
+    PrintInt("refcnt:", perr->sv_refcnt);
+    PrintInt("flags:", perr->sv_flags);
+    PrintPtr("svu_gp:", perr->sv_u.svu_gp);
+  }
+
   SV* err=0;
-  err=ERRSV;
+  //err=ERRSV;
   //SV* err=ERRSV;
-  if (SvTRUE(err))
+  if (SvTRUE(ERRSV))
   {       
     mError=strdup(SvPV(ERRSV, PL_na));
     //ReportError("Error in Data::test::connect: %s", mError.c_str());
@@ -143,6 +198,7 @@ bool PerlAPI::Connect(const char* dsn, const char* user, const char* pwd)
   {
     ret = POPi;
     //mClosures.push_back(&PerlAPI::Disconnect);
+    PrintInt("POPi:", ret);
   }
 
   PUTBACK ;
